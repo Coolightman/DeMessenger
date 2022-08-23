@@ -56,23 +56,32 @@ class EmailPasswordFragment : Fragment() {
                 Log.d(LOG_TAG, "User is NOT authorized")
             } else if (!currentUser.isEmailVerified) {
                 Log.d(LOG_TAG, "User email is not verified")
-                Toast.makeText(ownerActivity, "Check your e-mail for verification", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    ownerActivity,
+                    "Check your e-mail for verification",
+                    Toast.LENGTH_SHORT
+                ).show()
             } else {
                 Log.d(LOG_TAG, "User is authorized ${currentUser.uid}")
             }
         }
     }
 
-    private fun sendEmailVerification(){
+    private fun sendEmailVerification() {
         val currentUser = auth.currentUser
         currentUser?.sendEmailVerification()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(LOG_TAG, "sendEmailVerification:success")
-                Toast.makeText(ownerActivity, "Email verification is sent!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(ownerActivity, "Email verification is sent!", Toast.LENGTH_SHORT)
+                    .show()
             } else {
                 task.exception?.let {
                     Log.d(LOG_TAG, "sendEmailVerification:failure | ${it.message}")
-                    Toast.makeText(ownerActivity, "Can't send email verification", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        ownerActivity,
+                        "Can't send email verification",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
 
