@@ -2,7 +2,7 @@
     <!-- Base application theme. -->
     <style name="Theme.DeMessenger" parent="Theme.Material3.DayNight">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#1E88E5</item>
+        <item name="colorPrimary">@color/primary_app</item>
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/black</item>
         <!-- Secondary brand color. -->
