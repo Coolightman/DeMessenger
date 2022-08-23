@@ -7,12 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.coolightman.demessenger.databinding.FragmentEmailPasswordBinding
 
 class EmailPasswordFragment : Fragment() {
 
     companion object {
         const val LOG_TAG = "EmailPasswordFragment"
     }
+
+    private var _binding: FragmentEmailPasswordBinding? = null
+    private val binding get() = _binding!!
 
     private val auth by lazy {
         (requireActivity() as MainActivity).auth
@@ -25,14 +29,37 @@ class EmailPasswordFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_email_password, container, false)
+    ): View {
+        _binding = FragmentEmailPasswordBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         doSomeFirebase()
+        listeners()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    private fun listeners() {
+        binding.apply {
+            tvForgotPassword.setOnClickListener {
+                Toast.makeText(ownerActivity, "Go to change password", Toast.LENGTH_SHORT).show()
+            }
+
+            btLogin.setOnClickListener {
+                Toast.makeText(ownerActivity, "Try to login", Toast.LENGTH_SHORT).show()
+            }
+
+            btRegister.setOnClickListener {
+                Toast.makeText(ownerActivity, "Go to register", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     private fun doSomeFirebase() {
