@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.coolightman.demessenger.databinding.FragmentResetPasswordBinding
 import com.coolightman.demessenger.utils.isEmailValid
 
@@ -24,6 +25,8 @@ class ResetPasswordFragment : Fragment() {
         requireActivity()
     }
 
+    private val args by navArgs<ResetPasswordFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,7 +37,13 @@ class ResetPasswordFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val email = args.email
+        setEmailInEditText(email)
         listeners()
+    }
+
+    private fun setEmailInEditText(email: String) {
+        binding.etEmail.setText(email)
     }
 
     private fun listeners() {

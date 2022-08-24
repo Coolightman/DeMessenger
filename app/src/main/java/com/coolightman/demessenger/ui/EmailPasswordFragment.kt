@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -69,7 +70,8 @@ class EmailPasswordFragment : Fragment() {
     private fun listeners() {
         binding.apply {
             tvForgotPassword.setOnClickListener {
-                goToResetPasswordFragment()
+                val email = binding.etEmail.text.toString().trim()
+                goToResetPasswordFragment(email)
             }
 
             btLogin.setOnClickListener {
@@ -104,9 +106,9 @@ class EmailPasswordFragment : Fragment() {
         )
     }
 
-    private fun goToResetPasswordFragment() {
+    private fun goToResetPasswordFragment(email: String) {
         findNavController().navigate(
-            EmailPasswordFragmentDirections.actionEmailPasswordFragmentToResetPasswordFragment()
+            EmailPasswordFragmentDirections.actionEmailPasswordFragmentToResetPasswordFragment(email)
         )
     }
 
