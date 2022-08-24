@@ -3,23 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/emailPasswordFragment">
+    app:startDestination="@id/loginFragment">
 
-    <fragment
-        android:id="@+id/emailPasswordFragment"
-        android:name="com.coolightman.demessenger.ui.EmailPasswordFragment"
-        android:label="fragment_email_password"
-        tools:layout="@layout/fragment_email_password" >
-        <action
-            android:id="@+id/action_emailPasswordFragment_to_registrationFragment"
-            app:destination="@id/registrationFragment"/>
-        <action
-            android:id="@+id/action_emailPasswordFragment_to_resetPasswordFragment"
-            app:destination="@id/resetPasswordFragment" />
-        <action
-            android:id="@+id/action_emailPasswordFragment_to_usersListFragment"
-            app:destination="@id/usersListFragment" />
-    </fragment>
     <fragment
         android:id="@+id/registrationFragment"
         android:name="com.coolightman.demessenger.ui.RegistrationFragment"
@@ -39,4 +24,19 @@
         android:name="com.coolightman.demessenger.ui.UsersListFragment"
         android:label="fragment_users_list"
         tools:layout="@layout/fragment_users_list" />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.coolightman.demessenger.ui.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment_to_usersListFragment"
+            app:destination="@id/usersListFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
+    </fragment>
 </navigation>

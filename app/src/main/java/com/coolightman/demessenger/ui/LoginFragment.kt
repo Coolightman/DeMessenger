@@ -5,17 +5,16 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.coolightman.demessenger.databinding.FragmentEmailPasswordBinding
+import com.coolightman.demessenger.databinding.FragmentLoginBinding
 import com.coolightman.demessenger.utils.isEmailValid
 import com.google.firebase.auth.FirebaseUser
 
-class EmailPasswordFragment : Fragment() {
+class LoginFragment : Fragment() {
 
-    private var _binding: FragmentEmailPasswordBinding? = null
+    private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
 
     private val auth by lazy {
@@ -30,7 +29,7 @@ class EmailPasswordFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentEmailPasswordBinding.inflate(inflater, container, false)
+        _binding = FragmentLoginBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -102,19 +101,19 @@ class EmailPasswordFragment : Fragment() {
 
     private fun goToRegistrationFragment() {
         findNavController().navigate(
-            EmailPasswordFragmentDirections.actionEmailPasswordFragmentToRegistrationFragment()
+            LoginFragmentDirections.actionLoginFragmentToRegistrationFragment()
         )
     }
 
     private fun goToResetPasswordFragment(email: String) {
         findNavController().navigate(
-            EmailPasswordFragmentDirections.actionEmailPasswordFragmentToResetPasswordFragment(email)
+            LoginFragmentDirections.actionLoginFragmentToResetPasswordFragment(email)
         )
     }
 
     private fun goToUsersListFragment() {
         findNavController().navigate(
-            EmailPasswordFragmentDirections.actionEmailPasswordFragmentToUsersListFragment()
+            LoginFragmentDirections.actionLoginFragmentToUsersListFragment()
         )
     }
 
