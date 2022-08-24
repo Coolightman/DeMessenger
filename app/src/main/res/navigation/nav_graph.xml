@@ -7,7 +7,32 @@
 
     <fragment
         android:id="@+id/emailPasswordFragment"
-        android:name="com.coolightman.demessenger.EmailPasswordFragment"
+        android:name="com.coolightman.demessenger.ui.EmailPasswordFragment"
         android:label="fragment_email_password"
-        tools:layout="@layout/fragment_email_password" />
+        tools:layout="@layout/fragment_email_password" >
+        <action
+            android:id="@+id/action_emailPasswordFragment_to_registrationFragment"
+            app:destination="@id/registrationFragment"/>
+        <action
+            android:id="@+id/action_emailPasswordFragment_to_resetPasswordFragment"
+            app:destination="@id/resetPasswordFragment" />
+        <action
+            android:id="@+id/action_emailPasswordFragment_to_usersListFragment"
+            app:destination="@id/usersListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrationFragment"
+        android:name="com.coolightman.demessenger.ui.RegistrationFragment"
+        android:label="fragment_registration"
+        tools:layout="@layout/fragment_registration" />
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.coolightman.demessenger.ui.ResetPasswordFragment"
+        android:label="fragment_reset_password"
+        tools:layout="@layout/fragment_reset_password" />
+    <fragment
+        android:id="@+id/usersListFragment"
+        android:name="com.coolightman.demessenger.ui.UsersListFragment"
+        android:label="fragment_users_list"
+        tools:layout="@layout/fragment_users_list" />
 </navigation>
