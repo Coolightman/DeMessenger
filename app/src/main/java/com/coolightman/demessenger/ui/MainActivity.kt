@@ -8,7 +8,7 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    val auth by lazy {
+    val firebase by lazy {
         Firebase.auth
     }
 

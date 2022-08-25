@@ -1,15 +1,15 @@
 package com.coolightman.demessenger.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.coolightman.demessenger.databinding.FragmentRegistrationBinding
-import com.coolightman.demessenger.utils.isEmailValid
+import com.coolightman.demessenger.viewmodel.RegistrationViewModel
 
 
 class RegistrationFragment : Fragment() {
@@ -17,12 +17,8 @@ class RegistrationFragment : Fragment() {
     private var _binding: FragmentRegistrationBinding? = null
     private val binding get() = _binding!!
 
-    private val auth by lazy {
-        (requireActivity() as MainActivity).auth
-    }
-
-    private val ownerActivity by lazy {
-        requireActivity()
+    private val viewModel by lazy {
+        ViewModelProvider(this)[RegistrationViewModel::class.java]
     }
 
     override fun onCreateView(
@@ -35,7 +31,30 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observers()
         listeners()
+    }
+
+    private fun observers() {
+        viewModel.apply {
+            toast.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            toastLong.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
+                }
+            }
+
+            isSuccessRegistration.observe(viewLifecycleOwner) {
+                if (it) {
+                    findNavController().popBackStack()
+                }
+            }
+        }
     }
 
     private fun listeners() {
@@ -44,63 +63,13 @@ class RegistrationFragment : Fragment() {
                 val nickname = etNickname.text.toString().trim()
                 val email = etEmail.text.toString().trim()
                 val password = etPassword.text.toString().trim()
-
-                if (isNotEmptyFields(nickname, email, password)) {
-                    if (isEmailValid(email)) {
-                        createUser(email, password)
-                    } else {
-                        Toast.makeText(ownerActivity, "E-mail is not valid", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-                } else {
-                    Toast.makeText(ownerActivity, "Some fields are empty", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                viewModel.registerUser(nickname, email, password)
             }
-        }
-    }
-
-    private fun isNotEmptyFields(nickname: String, email: String, password: String) =
-        nickname.isNotEmpty() && password.isNotEmpty() && email.isNotEmpty()
-
-
-    private fun createUser(userEmail: String, userPassword: String) {
-        auth.createUserWithEmailAndPassword(userEmail, userPassword)
-            .addOnCompleteListener(ownerActivity) { task ->
-                if (task.isSuccessful) {
-                    Log.d(LOG_TAG, "createUserWithEmail:success")
-                    sendEmailVerification()
-                } else {
-                    task.exception?.let {
-                        Log.d(LOG_TAG, "createUserWithEmail:failure | ${it.message}")
-                        Toast.makeText(ownerActivity, it.message, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-    }
-
-    private fun sendEmailVerification() {
-        val currentUser = auth.currentUser
-        currentUser?.sendEmailVerification()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(LOG_TAG, "sendEmailVerification:success")
-                findNavController().popBackStack()
-            } else {
-                task.exception?.let {
-                    Log.d(LOG_TAG, "sendEmailVerification:failure | ${it.message}")
-                    Toast.makeText(ownerActivity, it.message, Toast.LENGTH_LONG).show()
-                }
-            }
-
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val LOG_TAG = "RegistrationFragment"
     }
 }

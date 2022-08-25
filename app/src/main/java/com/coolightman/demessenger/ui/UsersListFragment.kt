@@ -8,9 +8,11 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.coolightman.demessenger.R
 import com.coolightman.demessenger.databinding.FragmentUsersListBinding
+import com.coolightman.demessenger.viewmodel.UsersListViewModel
 import kotlinx.coroutines.delay
 
 class UsersListFragment : Fragment() {
@@ -18,20 +20,16 @@ class UsersListFragment : Fragment() {
     private var _binding: FragmentUsersListBinding? = null
     private val binding get() = _binding!!
 
-    private val auth by lazy {
-        (requireActivity() as MainActivity).auth
-    }
-
-    private val ownerActivity by lazy {
-        requireActivity()
+    private val viewModel by lazy {
+        ViewModelProvider(this)[UsersListViewModel::class.java]
     }
 
     private fun handleOnBackPressed() {
-        ownerActivity.onBackPressedDispatcher.addCallback(
+        requireActivity().onBackPressedDispatcher.addCallback(
             viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
-                    finishAffinity(ownerActivity)
+                    finishAffinity(requireActivity())
                 }
             })
     }
@@ -47,7 +45,18 @@ class UsersListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleOnBackPressed()
+        observers()
         listeners()
+    }
+
+    private fun observers() {
+        viewModel.apply {
+            isRestartApp.observe(viewLifecycleOwner){
+                if (it){
+                    restartApp()
+                }
+            }
+        }
     }
 
     private fun listeners() {
@@ -58,11 +67,7 @@ class UsersListFragment : Fragment() {
         binding.topAppBar.setOnMenuItemClickListener {
             when (it.itemId) {
                 R.id.menu_logout -> {
-                    lifecycleScope.launchWhenStarted {
-                        auth.signOut()
-                        delay(500L)
-                        restartApp()
-                    }
+                    viewModel.logoutUser()
                     true
                 }
                 else -> false
@@ -71,7 +76,7 @@ class UsersListFragment : Fragment() {
     }
 
     private fun restartApp() {
-        val intent = Intent(ownerActivity, MainActivity::class.java)
+        val intent = Intent(requireActivity(), MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         startActivity(intent)
         Runtime.getRuntime().exit(0)
@@ -80,9 +85,5 @@ class UsersListFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    companion object {
-        const val LOG_TAG = "UsersListFragment"
     }
 }
