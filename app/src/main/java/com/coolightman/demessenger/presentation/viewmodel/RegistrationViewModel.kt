@@ -56,8 +56,7 @@ class RegistrationViewModel : ViewModel() {
         val firebaseUser = firebaseAuth.currentUser
         firebaseUser?.let {
             val user = User(firebaseUser.uid, nickname)
-            val reference = firebaseDB.getReference("users")
-            reference.child(firebaseUser.uid).setValue(user)
+            firebaseDB.getReference("users").child(firebaseUser.uid).setValue(user)
         }
     }
 

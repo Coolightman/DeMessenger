@@ -19,9 +19,9 @@ class LoginViewModel : ViewModel() {
     val toastLong: LiveData<String>
         get() = _toastLong
 
-    private val _user = MutableLiveData<FirebaseUser>()
-    val user: LiveData<FirebaseUser>
-        get() = _user
+    private val _isAuthenticated = MutableLiveData<Boolean>()
+    val isAuthenticated: LiveData<Boolean>
+        get() = _isAuthenticated
 
     init {
         authentication()
@@ -29,8 +29,13 @@ class LoginViewModel : ViewModel() {
 
     private fun authentication() {
         val currentUser = firebaseAuth.currentUser
-        if (currentUser != null) enterApp(currentUser)
-        else Log.d(LOG_TAG, "User is NOT authorized")
+        if (currentUser != null){
+            _isAuthenticated.postValue(true)
+        }
+        else {
+            Log.d(LOG_TAG, "User is NOT authorized")
+            _isAuthenticated.postValue(false)
+        }
     }
 
     fun login(email: String, password: String) {
@@ -46,7 +51,7 @@ class LoginViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(LOG_TAG, "signInWithEmailAndPassword:success")
-                    enterApp(firebaseAuth.currentUser)
+                    _isAuthenticated.postValue(true)
                 } else {
                     task.exception?.let {
                         Log.d(LOG_TAG, "signInWithEmailAndPassword:failure | ${it.message}")
@@ -54,12 +59,6 @@ class LoginViewModel : ViewModel() {
                     }
                 }
             }
-    }
-
-    private fun enterApp(currentUser: FirebaseUser?) {
-        currentUser?.let {
-            _user.postValue(it)
-        }
     }
 
     private fun isNotEmptyFields(password: String, email: String) =
