@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/registrationFragment"
-        android:name="com.coolightman.demessenger.ui.RegistrationFragment"
+        android:name="com.coolightman.demessenger.presentation.ui.RegistrationFragment"
         android:label="fragment_registration"
         tools:layout="@layout/fragment_registration" />
     <fragment
         android:id="@+id/resetPasswordFragment"
-        android:name="com.coolightman.demessenger.ui.ResetPasswordFragment"
+        android:name="com.coolightman.demessenger.presentation.ui.ResetPasswordFragment"
         android:label="fragment_reset_password"
         tools:layout="@layout/fragment_reset_password" >
         <argument
@@ -21,12 +21,12 @@
     </fragment>
     <fragment
         android:id="@+id/usersListFragment"
-        android:name="com.coolightman.demessenger.ui.UsersListFragment"
+        android:name="com.coolightman.demessenger.presentation.ui.UsersListFragment"
         android:label="fragment_users_list"
         tools:layout="@layout/fragment_users_list" />
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.coolightman.demessenger.ui.LoginFragment"
+        android:name="com.coolightman.demessenger.presentation.ui.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action

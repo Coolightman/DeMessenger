@@ -1,4 +1,4 @@
-package com.coolightman.demessenger.ui
+package com.coolightman.demessenger.presentation.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.coolightman.demessenger.databinding.FragmentLoginBinding
-import com.coolightman.demessenger.viewmodel.LoginViewModel
+import com.coolightman.demessenger.presentation.viewmodel.LoginViewModel
 
 class LoginFragment : Fragment() {
 

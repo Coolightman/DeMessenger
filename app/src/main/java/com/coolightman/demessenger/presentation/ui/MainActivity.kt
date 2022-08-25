@@ -1,4 +1,4 @@
-package com.coolightman.demessenger.ui
+package com.coolightman.demessenger.presentation.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

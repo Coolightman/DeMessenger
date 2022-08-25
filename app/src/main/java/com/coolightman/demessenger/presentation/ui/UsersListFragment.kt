@@ -1,19 +1,20 @@
-package com.coolightman.demessenger.ui
+package com.coolightman.demessenger.presentation.ui
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.coolightman.demessenger.R
 import com.coolightman.demessenger.databinding.FragmentUsersListBinding
-import com.coolightman.demessenger.viewmodel.UsersListViewModel
-import kotlinx.coroutines.delay
+import com.coolightman.demessenger.domain.entity.User
+import com.coolightman.demessenger.presentation.adapter.UsersAdapter
+import com.coolightman.demessenger.presentation.viewmodel.UsersListViewModel
 
 class UsersListFragment : Fragment() {
 
@@ -23,6 +24,8 @@ class UsersListFragment : Fragment() {
     private val viewModel by lazy {
         ViewModelProvider(this)[UsersListViewModel::class.java]
     }
+
+    private lateinit var usersAdapter: UsersAdapter
 
     private fun handleOnBackPressed() {
         requireActivity().onBackPressedDispatcher.addCallback(
@@ -45,14 +48,24 @@ class UsersListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handleOnBackPressed()
+        createAdapter()
         observers()
         listeners()
     }
 
+    private fun createAdapter() {
+        usersAdapter = UsersAdapter { userId -> onUserClick(userId) }
+        binding.rvUsers.adapter = usersAdapter
+    }
+
+    private fun onUserClick(userId: String) {
+        Toast.makeText(requireActivity(), userId, Toast.LENGTH_SHORT).show()
+    }
+
     private fun observers() {
         viewModel.apply {
-            isRestartApp.observe(viewLifecycleOwner){
-                if (it){
+            isRestartApp.observe(viewLifecycleOwner) {
+                if (it) {
                     restartApp()
                 }
             }

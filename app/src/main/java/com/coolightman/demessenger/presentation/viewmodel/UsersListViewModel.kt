@@ -1,4 +1,4 @@
-package com.coolightman.demessenger.viewmodel
+package com.coolightman.demessenger.presentation.viewmodel
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
