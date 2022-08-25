@@ -4,9 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.coolightman.demessenger.domain.entity.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class RegistrationViewModel : ViewModel() {
+
+    private val firebase = FirebaseAuth.getInstance()
+    private val firebaseDB = Firebase.database.reference
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -22,17 +28,18 @@ class RegistrationViewModel : ViewModel() {
 
     fun registerUser(nickname: String, email: String, password: String) {
         if (isNotEmptyFields(nickname, email, password)) {
-            createUserFirebase(email, password)
+            createUserFirebase(nickname, email, password)
         } else {
             _toast.postValue("Some fields are empty")
         }
     }
 
-    private fun createUserFirebase(userEmail: String, userPassword: String) {
-        firebase.createUserWithEmailAndPassword(userEmail, userPassword)
+    private fun createUserFirebase(nickname: String, email: String, password: String) {
+        firebase.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(LOG_TAG, "createUserWithEmail:success")
+                    addUserInFDB(nickname)
                     sendEmailVerification()
                 } else {
                     task.exception?.let {
@@ -43,11 +50,20 @@ class RegistrationViewModel : ViewModel() {
             }
     }
 
+    private fun addUserInFDB(nickname: String) {
+        val firebaseUser = firebase.currentUser
+        firebaseUser?.let {
+            val user = User(firebaseUser.uid, nickname)
+            firebaseDB.child("users").push().child(firebaseUser.uid).setValue(user)
+        }
+    }
+
     private fun sendEmailVerification() {
         val currentUser = firebase.currentUser
         currentUser?.sendEmailVerification()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(LOG_TAG, "sendEmailVerification:success")
+                _toast.postValue("We sent you verify e-mail")
                 _isSuccessRegistration.postValue(true)
             } else {
                 task.exception?.let {
@@ -62,7 +78,6 @@ class RegistrationViewModel : ViewModel() {
         nickname.isNotEmpty() && password.isNotEmpty() && email.isNotEmpty()
 
     companion object {
-        private val firebase = FirebaseAuth.getInstance()
         private const val LOG_TAG = "RegistrationViewModel"
     }
 }

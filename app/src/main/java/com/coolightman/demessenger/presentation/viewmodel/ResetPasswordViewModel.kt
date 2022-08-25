@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ResetPasswordViewModel : ViewModel() {
 
+    private val firebase = FirebaseAuth.getInstance()
+
     private var _toast = MutableLiveData<String>()
     val toast: LiveData<String>
         get() = _toast
@@ -44,7 +46,6 @@ class ResetPasswordViewModel : ViewModel() {
     }
 
     companion object {
-        private val firebase = FirebaseAuth.getInstance()
         private const val LOG_TAG = "ResetPasswordViewModel"
     }
 }

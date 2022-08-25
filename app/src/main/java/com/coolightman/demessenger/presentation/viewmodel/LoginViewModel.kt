@@ -9,6 +9,8 @@ import com.google.firebase.auth.FirebaseUser
 
 class LoginViewModel : ViewModel() {
 
+    private val firebase = FirebaseAuth.getInstance()
+
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
         get() = _toast
@@ -74,7 +76,6 @@ class LoginViewModel : ViewModel() {
     }
 
     companion object {
-        private val firebase = FirebaseAuth.getInstance()
         private const val LOG_TAG = "LoginViewModel"
     }
 

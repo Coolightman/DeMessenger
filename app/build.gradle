@@ -51,6 +51,9 @@ dependencies {
 
     implementation platform('com.google.firebase:firebase-bom:30.3.2')
     implementation 'com.google.firebase:firebase-auth-ktx'
+    implementation 'com.google.firebase:firebase-database-ktx'
+
+
     implementation 'androidx.annotation:annotation:1.4.0'
 
     testImplementation 'junit:junit:4.13.2'

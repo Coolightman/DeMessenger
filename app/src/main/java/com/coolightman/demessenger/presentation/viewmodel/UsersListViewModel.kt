@@ -6,11 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class UsersListViewModel : ViewModel() {
+
+    private val firebase = FirebaseAuth.getInstance()
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -37,7 +40,6 @@ class UsersListViewModel : ViewModel() {
     }
 
     companion object {
-        private val firebase = FirebaseAuth.getInstance()
         private const val LOG_TAG = "UsersListViewModel"
         private const val SIGN_OUT_PAUSE = 500L
     }

@@ -5,7 +5,7 @@ import androidx.recyclerview.widget.DiffUtil
 data class User(
     val userId: String,
     val nickName: String,
-    val isOnline: Boolean
+    val isOnline: Boolean = false
 ) {
     companion object {
         val DIFF = object : DiffUtil.ItemCallback<User>() {
