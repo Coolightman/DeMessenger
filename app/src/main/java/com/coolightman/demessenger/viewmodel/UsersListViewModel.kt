@@ -31,14 +31,14 @@ class UsersListViewModel : ViewModel() {
     fun logoutUser() {
         viewModelScope.launch(Dispatchers.IO) {
             firebase.signOut()
-            delay(500L)
+            delay(SIGN_OUT_PAUSE)
             _isRestartApp.postValue(true)
         }
     }
 
-
     companion object {
         private val firebase = FirebaseAuth.getInstance()
-        const val LOG_TAG = "UsersListViewModel"
+        private const val LOG_TAG = "UsersListViewModel"
+        private const val SIGN_OUT_PAUSE = 500L
     }
 }

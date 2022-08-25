@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.coolightman.demessenger.utils.isEmailValid
 import com.google.firebase.auth.FirebaseAuth
 
 class RegistrationViewModel : ViewModel() {
@@ -23,11 +22,7 @@ class RegistrationViewModel : ViewModel() {
 
     fun registerUser(nickname: String, email: String, password: String) {
         if (isNotEmptyFields(nickname, email, password)) {
-            if (isEmailValid(email)) {
-                createUserFirebase(email, password)
-            } else {
-                _toast.postValue("E-mail is not valid")
-            }
+            createUserFirebase(email, password)
         } else {
             _toast.postValue("Some fields are empty")
         }
@@ -68,6 +63,6 @@ class RegistrationViewModel : ViewModel() {
 
     companion object {
         private val firebase = FirebaseAuth.getInstance()
-        const val LOG_TAG = "RegistrationViewModel"
+        private const val LOG_TAG = "RegistrationViewModel"
     }
 }

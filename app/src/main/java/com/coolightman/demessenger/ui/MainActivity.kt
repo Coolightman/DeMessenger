@@ -8,14 +8,8 @@ import com.google.firebase.ktx.Firebase
 
 class MainActivity : AppCompatActivity() {
 
-    val firebase by lazy {
-        Firebase.auth
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
     }
-
-
 }

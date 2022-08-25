@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.coolightman.demessenger.utils.isEmailValid
 import com.google.firebase.auth.FirebaseAuth
 
 class ResetPasswordViewModel : ViewModel() {
@@ -23,11 +22,7 @@ class ResetPasswordViewModel : ViewModel() {
 
     fun resetPassword(userEmail: String) {
         if (userEmail.isNotEmpty()) {
-            if (isEmailValid(userEmail)) {
-                resetPasswordFirebase(userEmail)
-            } else {
-                _toast.postValue("E-mail is not valid")
-            }
+            resetPasswordFirebase(userEmail)
         } else {
             _toast.postValue("Some fields are empty")
         }
@@ -50,6 +45,6 @@ class ResetPasswordViewModel : ViewModel() {
 
     companion object {
         private val firebase = FirebaseAuth.getInstance()
-        const val LOG_TAG = "ResetPasswordViewModel"
+        private const val LOG_TAG = "ResetPasswordViewModel"
     }
 }

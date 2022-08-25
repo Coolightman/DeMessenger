@@ -4,7 +4,6 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.coolightman.demessenger.utils.isEmailValid
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -35,11 +34,7 @@ class LoginViewModel : ViewModel() {
 
     fun login(email: String, password: String) {
         if (isNotEmptyFields(password, email)) {
-            if (isEmailValid(email)) {
-                signInFirebase(email, password)
-            } else {
-                _toast.postValue("E-mail is not valid")
-            }
+            signInFirebase(email, password)
         } else {
             _toast.postValue("Some fields are empty")
         }
@@ -80,7 +75,7 @@ class LoginViewModel : ViewModel() {
 
     companion object {
         private val firebase = FirebaseAuth.getInstance()
-        const val LOG_TAG = "LoginViewModel"
+        private const val LOG_TAG = "LoginViewModel"
     }
 
 }

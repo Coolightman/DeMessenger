@@ -1,7 +1,6 @@
 package com.coolightman.demessenger.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.coolightman.demessenger.databinding.FragmentResetPasswordBinding
-import com.coolightman.demessenger.utils.isEmailValid
 import com.coolightman.demessenger.viewmodel.ResetPasswordViewModel
 
 class ResetPasswordFragment : Fragment() {
@@ -43,18 +41,18 @@ class ResetPasswordFragment : Fragment() {
 
     private fun observers() {
         viewModel.apply {
-            toast.observe(viewLifecycleOwner){
-                if (it.isNotEmpty()){
+            toast.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
                     Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
                 }
             }
-            toastLong.observe(viewLifecycleOwner){
-                if (it.isNotEmpty()){
+            toastLong.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
                     Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
                 }
             }
-            isSuccessReset.observe(viewLifecycleOwner){
-                if (it){
+            isSuccessReset.observe(viewLifecycleOwner) {
+                if (it) {
                     findNavController().popBackStack()
                 }
             }
