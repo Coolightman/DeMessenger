@@ -3,8 +3,8 @@ package com.coolightman.demessenger.domain.entity
 import androidx.recyclerview.widget.DiffUtil
 
 data class User(
-    val userId: String,
-    val nickName: String,
+    val userId: String = "",
+    val nickName: String = "",
     val isOnline: Boolean = false
 ) {
     companion object {

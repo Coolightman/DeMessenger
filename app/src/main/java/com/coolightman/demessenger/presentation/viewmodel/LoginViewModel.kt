@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser
 
 class LoginViewModel : ViewModel() {
 
-    private val firebase = FirebaseAuth.getInstance()
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -28,10 +28,9 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun authentication() {
-        val currentUser = firebase.currentUser
-        if (currentUser == null) {
-            Log.d(LOG_TAG, "User is NOT authorized")
-        } else checkEmailVerifyAndEnter(currentUser)
+        val currentUser = firebaseAuth.currentUser
+        if (currentUser != null) enterApp(currentUser)
+        else Log.d(LOG_TAG, "User is NOT authorized")
     }
 
     fun login(email: String, password: String) {
@@ -43,11 +42,11 @@ class LoginViewModel : ViewModel() {
     }
 
     private fun signInFirebase(userEmail: String, userPassword: String) {
-        firebase.signInWithEmailAndPassword(userEmail, userPassword)
+        firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(LOG_TAG, "signInWithEmailAndPassword:success")
-                    checkEmailVerifyAndEnter(firebase.currentUser!!)
+                    enterApp(firebaseAuth.currentUser)
                 } else {
                     task.exception?.let {
                         Log.d(LOG_TAG, "signInWithEmailAndPassword:failure | ${it.message}")
@@ -57,13 +56,9 @@ class LoginViewModel : ViewModel() {
             }
     }
 
-    private fun checkEmailVerifyAndEnter(currentUser: FirebaseUser) {
-        if (!currentUser.isEmailVerified) {
-            Log.d(LOG_TAG, "User email is not verified")
-            _toast.postValue("Check your e-mail for verification")
-        } else {
-            Log.d(LOG_TAG, "User is authorized ${currentUser.uid}")
-            _user.postValue(currentUser)
+    private fun enterApp(currentUser: FirebaseUser?) {
+        currentUser?.let {
+            _user.postValue(it)
         }
     }
 

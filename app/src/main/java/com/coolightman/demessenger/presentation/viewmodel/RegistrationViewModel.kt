@@ -6,13 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.coolightman.demessenger.domain.entity.User
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class RegistrationViewModel : ViewModel() {
 
-    private val firebase = FirebaseAuth.getInstance()
-    private val firebaseDB = Firebase.database.reference
+    private val firebaseAuth = FirebaseAuth.getInstance()
+    private val firebaseDB = FirebaseDatabase.getInstance("https://demessenger-d355f-default-rtdb.europe-west1.firebasedatabase.app/")
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -35,12 +36,13 @@ class RegistrationViewModel : ViewModel() {
     }
 
     private fun createUserFirebase(nickname: String, email: String, password: String) {
-        firebase.createUserWithEmailAndPassword(email, password)
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(LOG_TAG, "createUserWithEmail:success")
                     addUserInFDB(nickname)
-                    sendEmailVerification()
+                    _toast.postValue("Your account created successfully")
+                    _isSuccessRegistration.postValue(true)
                 } else {
                     task.exception?.let {
                         Log.d(LOG_TAG, "createUserWithEmail:failure | ${it.message}")
@@ -51,26 +53,11 @@ class RegistrationViewModel : ViewModel() {
     }
 
     private fun addUserInFDB(nickname: String) {
-        val firebaseUser = firebase.currentUser
+        val firebaseUser = firebaseAuth.currentUser
         firebaseUser?.let {
             val user = User(firebaseUser.uid, nickname)
-            firebaseDB.child("users").push().child(firebaseUser.uid).setValue(user)
-        }
-    }
-
-    private fun sendEmailVerification() {
-        val currentUser = firebase.currentUser
-        currentUser?.sendEmailVerification()?.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(LOG_TAG, "sendEmailVerification:success")
-                _toast.postValue("We sent you verify e-mail")
-                _isSuccessRegistration.postValue(true)
-            } else {
-                task.exception?.let {
-                    Log.d(LOG_TAG, "sendEmailVerification:failure | ${it.message}")
-                    _toastLong.postValue(it.message)
-                }
-            }
+            val reference = firebaseDB.getReference("users")
+            reference.child(firebaseUser.uid).setValue(user)
         }
     }
 

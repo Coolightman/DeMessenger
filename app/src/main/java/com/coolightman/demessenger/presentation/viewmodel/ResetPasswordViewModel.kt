@@ -8,7 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class ResetPasswordViewModel : ViewModel() {
 
-    private val firebase = FirebaseAuth.getInstance()
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
     private var _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -31,7 +31,7 @@ class ResetPasswordViewModel : ViewModel() {
     }
 
     private fun resetPasswordFirebase(userEmail: String) {
-        firebase.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
+        firebaseAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 Log.d(LOG_TAG, "sendPasswordResetEmail:success")
                 _toast.postValue("Reset password email is sent")
