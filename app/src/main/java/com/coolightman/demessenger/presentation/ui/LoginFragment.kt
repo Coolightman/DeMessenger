@@ -49,10 +49,10 @@ class LoginFragment : Fragment() {
                 }
             }
 
-            isAuthenticated.observe(viewLifecycleOwner) {
-                when(it){
-                    true -> goToUsersListFragment()
-                    false -> binding.viewSplashScreen.visibility = GONE
+            currentUserId.observe(viewLifecycleOwner) {
+                when (it) {
+                    null -> binding.viewSplashScreen.visibility = GONE
+                    else -> goToUsersListFragment(it)
                 }
             }
 
@@ -97,9 +97,9 @@ class LoginFragment : Fragment() {
         )
     }
 
-    private fun goToUsersListFragment() {
+    private fun goToUsersListFragment(currentUserId: String) {
         findNavController().navigate(
-            LoginFragmentDirections.actionLoginFragmentToUsersListFragment()
+            LoginFragmentDirections.actionLoginFragmentToUsersListFragment(currentUserId)
         )
     }
 }

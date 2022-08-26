@@ -10,9 +10,10 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.coolightman.demessenger.R
 import com.coolightman.demessenger.databinding.FragmentUsersListBinding
-import com.coolightman.demessenger.domain.entity.User
 import com.coolightman.demessenger.presentation.adapter.UsersAdapter
 import com.coolightman.demessenger.presentation.viewmodel.UsersListViewModel
 
@@ -23,6 +24,12 @@ class UsersListFragment : Fragment() {
 
     private val viewModel by lazy {
         ViewModelProvider(this)[UsersListViewModel::class.java]
+    }
+
+    private val args by navArgs<UsersListFragmentArgs>()
+
+    private val currentUserId by lazy {
+        args.currentUserId
     }
 
     private lateinit var usersAdapter: UsersAdapter
@@ -58,8 +65,13 @@ class UsersListFragment : Fragment() {
         binding.rvUsers.adapter = usersAdapter
     }
 
-    private fun onUserClick(userId: String) {
-        Toast.makeText(requireActivity(), userId, Toast.LENGTH_SHORT).show()
+    private fun onUserClick(companionUserId: String) {
+        findNavController().navigate(
+            UsersListFragmentDirections.actionUsersListFragmentToChatFragment(
+                currentUserId,
+                companionUserId
+            )
+        )
     }
 
     private fun observers() {
@@ -74,7 +86,7 @@ class UsersListFragment : Fragment() {
                     Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
                 }
             }
-            usersList.observe(viewLifecycleOwner){
+            usersList.observe(viewLifecycleOwner) {
                 usersAdapter.submitList(it)
             }
 

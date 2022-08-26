@@ -8,4 +8,8 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="primary_app">#1E88E5</color>
+    <color name="own_message_color">#80A5D6A7</color>
+    <color name="foreign_message_color">#8081D4FA</color>
+    <color name="send_message_color">#26000000</color>
+    <color name="companion_background_info_color">#4D9FA8DA</color>
 </resources>

@@ -19,9 +19,9 @@ class LoginViewModel : ViewModel() {
     val toastLong: LiveData<String>
         get() = _toastLong
 
-    private val _isAuthenticated = MutableLiveData<Boolean>()
-    val isAuthenticated: LiveData<Boolean>
-        get() = _isAuthenticated
+    private val _currentUserId = MutableLiveData<String?>()
+    val currentUserId: LiveData<String?>
+        get() = _currentUserId
 
     init {
         authentication()
@@ -30,11 +30,11 @@ class LoginViewModel : ViewModel() {
     private fun authentication() {
         val currentUser = firebaseAuth.currentUser
         if (currentUser != null){
-            _isAuthenticated.postValue(true)
+            _currentUserId.postValue(currentUser.uid)
         }
         else {
             Log.d(LOG_TAG, "User is NOT authorized")
-            _isAuthenticated.postValue(false)
+            _currentUserId.postValue(null)
         }
     }
 
@@ -51,7 +51,7 @@ class LoginViewModel : ViewModel() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     Log.d(LOG_TAG, "signInWithEmailAndPassword:success")
-                    _isAuthenticated.postValue(true)
+                    authentication()
                 } else {
                     task.exception?.let {
                         Log.d(LOG_TAG, "signInWithEmailAndPassword:failure | ${it.message}")

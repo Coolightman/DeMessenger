@@ -51,9 +51,7 @@ class RegistrationFragment : Fragment() {
 
             isSuccessRegistration.observe(viewLifecycleOwner) {
                 if (it) {
-                    findNavController().navigate(
-                        RegistrationFragmentDirections.actionRegistrationFragmentToUsersListFragment()
-                    )
+                    findNavController().popBackStack()
                 }
             }
         }
