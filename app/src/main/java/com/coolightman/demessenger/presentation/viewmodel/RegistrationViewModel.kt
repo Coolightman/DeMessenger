@@ -5,15 +5,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.coolightman.demessenger.domain.entity.User
+import com.coolightman.demessenger.utils.DB_URL
+import com.coolightman.demessenger.utils.USERS_REF
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ktx.database
-import com.google.firebase.ktx.Firebase
 
 class RegistrationViewModel : ViewModel() {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
-    private val firebaseDB = FirebaseDatabase.getInstance("https://demessenger-d355f-default-rtdb.europe-west1.firebasedatabase.app/")
+    private val firebaseDB = FirebaseDatabase.getInstance(DB_URL)
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -56,7 +56,7 @@ class RegistrationViewModel : ViewModel() {
         val firebaseUser = firebaseAuth.currentUser
         firebaseUser?.let {
             val user = User(firebaseUser.uid, nickname)
-            firebaseDB.getReference("users").child(firebaseUser.uid).setValue(user)
+            firebaseDB.getReference(USERS_REF).child(firebaseUser.uid).setValue(user)
         }
     }
 

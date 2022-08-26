@@ -64,6 +64,20 @@ class UsersListFragment : Fragment() {
 
     private fun observers() {
         viewModel.apply {
+            toast.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    Toast.makeText(requireActivity(), it, Toast.LENGTH_SHORT).show()
+                }
+            }
+            toastLong.observe(viewLifecycleOwner) {
+                if (it.isNotEmpty()) {
+                    Toast.makeText(requireActivity(), it, Toast.LENGTH_LONG).show()
+                }
+            }
+            usersList.observe(viewLifecycleOwner){
+                usersAdapter.submitList(it)
+            }
+
             isRestartApp.observe(viewLifecycleOwner) {
                 if (it) {
                     restartApp()
