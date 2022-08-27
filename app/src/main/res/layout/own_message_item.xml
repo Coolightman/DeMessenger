@@ -4,7 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="4dp">
+    android:padding="4dp"
+    android:paddingEnd="8dp"
+    android:paddingStart="8dp">
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_own_message"

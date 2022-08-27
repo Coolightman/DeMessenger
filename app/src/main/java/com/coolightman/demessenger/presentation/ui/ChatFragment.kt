@@ -43,7 +43,7 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createAdapter()
-//        testAdapter()
+        testAdapter()
         observers()
         listeners()
     }
@@ -58,7 +58,7 @@ class ChatFragment : Fragment() {
             }
         }
         messagesAdapter.submitList(list)
-//        binding.rvChat.scrollToPosition(binding.rvChat.adapter?.itemCount!! -1 )
+        binding.rvChat.scrollToPosition(binding.rvChat.adapter?.itemCount!! -1 )
     }
 
     private fun listeners() {

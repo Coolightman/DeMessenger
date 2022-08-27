@@ -23,11 +23,9 @@
             android:id="@+id/layout_companion_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/companion_info_background"
+            android:background="@color/companion_background_info_color"
             android:gravity="center"
             android:orientation="horizontal"
-            android:paddingTop="2dp"
-            android:paddingBottom="2dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/topAppBar">
@@ -54,7 +52,6 @@
             android:id="@+id/rv_chat"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:padding="4dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             app:layout_constraintBottom_toTopOf="@id/layout_message"
             app:layout_constraintEnd_toEndOf="parent"
@@ -66,30 +63,36 @@
             android:id="@+id/layout_message"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/send_message_background"
+            android:background="@color/send_message_color"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rv_chat"
             app:layout_constraintStart_toStartOf="parent">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/et_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="50"
+                android:layout_weight="1"
                 android:background="@null"
                 android:hint="@string/message_hint"
                 android:inputType="textMultiLine"
                 android:minHeight="48dp"
-                android:padding="8dp" />
+                android:paddingStart="16dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp" />
 
-            <ImageView
-                android:id="@+id/img_send_message"
+            <View
+                android:id="@+id/view_send_message"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_gravity="bottom"
-                android:layout_weight="1"
-                android:src="@android:drawable/ic_menu_send"
+                android:background="@drawable/ic_baseline_send_24"
+                android:backgroundTint="@color/primary_app"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
                 app:tint="@color/primary_app" />
 
         </LinearLayout>
