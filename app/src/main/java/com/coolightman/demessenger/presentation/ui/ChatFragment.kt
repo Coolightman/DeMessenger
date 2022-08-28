@@ -103,6 +103,7 @@ class ChatFragment : Fragment() {
 
             messages.observe(viewLifecycleOwner) {
                 messagesAdapter.submitList(it)
+                binding.rvChat.smoothScrollToPosition(it.size)
             }
 
             companionUser.observe(viewLifecycleOwner) {
