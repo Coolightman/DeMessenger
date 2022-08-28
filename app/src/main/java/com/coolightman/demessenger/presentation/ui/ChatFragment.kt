@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.coolightman.demessenger.databinding.FragmentChatBinding
 import com.coolightman.demessenger.domain.entity.Message
 import com.coolightman.demessenger.presentation.adapter.MessagesAdapter
@@ -43,22 +44,8 @@ class ChatFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         createAdapter()
-        testAdapter()
         observers()
         listeners()
-    }
-
-    private fun testAdapter() {
-        val list = mutableListOf<Message>()
-        for (i in 0..20) {
-            if (i % 5 == 0) {
-                list.add(Message(senderId = currentUserId, text = "Message $i from me"))
-            } else {
-                list.add(Message(text = "Message $i from companion $companionUserId"))
-            }
-        }
-        messagesAdapter.submitList(list)
-        binding.rvChat.scrollToPosition(binding.rvChat.adapter?.itemCount!! -1 )
     }
 
     private fun listeners() {
@@ -71,8 +58,17 @@ class ChatFragment : Fragment() {
 
     private fun createAdapter() {
         messagesAdapter = MessagesAdapter(currentUserId)
-        binding.rvChat.adapter = messagesAdapter
+        binding.rvChat.apply {
+            layoutManager = setLayoutManager()
+            adapter = messagesAdapter
+        }
     }
 
+    private fun setLayoutManager() =
+        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+            .apply {
+                stackFromEnd = true
+                isSmoothScrollbarEnabled = true
+            }
 
 }
