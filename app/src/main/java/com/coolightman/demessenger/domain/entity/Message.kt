@@ -3,7 +3,6 @@ package com.coolightman.demessenger.domain.entity
 import androidx.recyclerview.widget.DiffUtil
 
 data class Message(
-    val messageId: String = "",
     val text: String = "",
     val senderId: String = "",
     val receiverId: String = ""
@@ -11,7 +10,11 @@ data class Message(
     companion object {
         val DIFF = object : DiffUtil.ItemCallback<Message>() {
             override fun areItemsTheSame(oldItem: Message, newItem: Message): Boolean {
-                return oldItem.messageId == newItem.messageId
+                val oldStamp =
+                    oldItem.senderId + oldItem.receiverId + oldItem.text + System.currentTimeMillis()
+                val newStamp =
+                    newItem.senderId + newItem.receiverId + newItem.text + System.currentTimeMillis()
+                return oldStamp == newStamp
             }
 
             override fun areContentsTheSame(oldItem: Message, newItem: Message): Boolean {
