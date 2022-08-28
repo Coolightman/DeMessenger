@@ -27,7 +27,7 @@ class UsersAdapter(private val clickListener: (String) -> Unit) :
         val user = getItem(position)
         holder.binding.apply {
             setNickName(tvUserInfo, user.nickName)
-            setOnlineStatus(viewOnlineStatus, user.isOnline, holder)
+            setOnlineStatus(viewOnlineStatus, user.online, holder)
             root.setOnClickListener { clickListener(user.userId) }
         }
     }

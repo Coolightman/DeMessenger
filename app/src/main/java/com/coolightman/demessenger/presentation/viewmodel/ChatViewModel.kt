@@ -9,6 +9,7 @@ import com.coolightman.demessenger.domain.entity.User
 import com.coolightman.demessenger.utils.DB_URL
 import com.coolightman.demessenger.utils.MESSAGES_REF
 import com.coolightman.demessenger.utils.USERS_REF
+import com.coolightman.demessenger.utils.USER_IS_ONLINE_KEY
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -46,6 +47,10 @@ class ChatViewModel(
     init {
         listenCompanionUserData()
         listenMessages()
+    }
+
+    fun setCurrentUserIsOnline(isOnline: Boolean){
+        referenceUsers.child(currentUserId).child(USER_IS_ONLINE_KEY).setValue(isOnline)
     }
 
     private fun listenMessages() {

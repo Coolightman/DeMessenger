@@ -58,6 +58,16 @@ class ChatFragment : Fragment() {
         listeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.setCurrentUserIsOnline(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.setCurrentUserIsOnline(false)
+    }
+
     private fun listeners() {
         binding.apply {
             viewSendMessage.setOnClickListener {
@@ -115,7 +125,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun getIsOnlineBackground(it: User): Drawable? {
-        return when (it.isOnline) {
+        return when (it.online) {
             true ->  ContextCompat.getDrawable(requireContext(), R.drawable.circle_green)
             false -> ContextCompat.getDrawable(requireContext(), R.drawable.circle_red)
         }

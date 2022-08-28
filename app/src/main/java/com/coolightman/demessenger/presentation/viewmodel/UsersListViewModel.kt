@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.coolightman.demessenger.domain.entity.User
 import com.coolightman.demessenger.utils.DB_URL
 import com.coolightman.demessenger.utils.USERS_REF
+import com.coolightman.demessenger.utils.USER_IS_ONLINE_KEY
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
@@ -22,6 +23,7 @@ class UsersListViewModel : ViewModel() {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDB = FirebaseDatabase.getInstance(DB_URL)
+    private val referenceUsers = firebaseDB.getReference(USERS_REF)
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -47,10 +49,14 @@ class UsersListViewModel : ViewModel() {
         loadUsersList()
     }
 
-    private fun loadUsersList() {
-        val usersReference = firebaseDB.getReference(USERS_REF)
+    fun setCurrentUserIsOnline(isOnline: Boolean){
+        firebaseAuth.currentUser?.let {
+            referenceUsers.child(it.uid).child(USER_IS_ONLINE_KEY).setValue(isOnline)
+        }
+    }
 
-        usersReference.addValueEventListener(object : ValueEventListener {
+    private fun loadUsersList() {
+        referenceUsers.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val usersFromDb = mutableListOf<User>()
 
@@ -76,6 +82,7 @@ class UsersListViewModel : ViewModel() {
 
     fun logoutUser() {
         viewModelScope.launch(Dispatchers.IO) {
+            setCurrentUserIsOnline(false)
             firebaseAuth.signOut()
             Log.d(LOG_TAG, "Logout current User")
             delay(SIGN_OUT_PAUSE)

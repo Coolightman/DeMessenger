@@ -60,6 +60,16 @@ class UsersListFragment : Fragment() {
         listeners()
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.setCurrentUserIsOnline(true)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        viewModel.setCurrentUserIsOnline(false)
+    }
+
     private fun createAdapter() {
         usersAdapter = UsersAdapter { userId -> onUserClick(userId) }
         binding.rvUsers.adapter = usersAdapter
