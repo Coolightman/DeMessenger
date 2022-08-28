@@ -12,6 +12,7 @@ import com.coolightman.demessenger.databinding.FragmentChatBinding
 import com.coolightman.demessenger.domain.entity.Message
 import com.coolightman.demessenger.presentation.adapter.MessagesAdapter
 import com.coolightman.demessenger.presentation.viewmodel.ChatViewModel
+import com.coolightman.demessenger.presentation.viewmodel.ChatViewModelFactory
 
 class ChatFragment : Fragment() {
 
@@ -19,7 +20,11 @@ class ChatFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by lazy {
-        ViewModelProvider(this)[ChatViewModel::class.java]
+        ViewModelProvider(this, viewModelFactory)[ChatViewModel::class.java]
+    }
+
+    private val viewModelFactory by lazy {
+        ChatViewModelFactory(currentUserId, companionUserId)
     }
 
     private val args by navArgs<ChatFragmentArgs>()
