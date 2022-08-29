@@ -34,9 +34,7 @@
         tools:layout="@layout/fragment_users_list" >
         <action
             android:id="@+id/action_usersListFragment_to_chatFragment"
-            app:destination="@id/chatFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim" />
+            app:destination="@id/chatFragment" />
         <argument
             android:name="currentUserId"
             app:argType="string" />
