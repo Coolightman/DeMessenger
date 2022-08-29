@@ -59,6 +59,11 @@ class LoginFragment : Fragment() {
         }
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.resetToast()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
@@ -73,13 +78,11 @@ class LoginFragment : Fragment() {
             }
 
             btRegister.setOnClickListener {
-                viewModel.resetToast()
                 goToRegistrationFragment()
             }
 
             tvForgotPassword.setOnClickListener {
                 val email = binding.etEmail.text.toString().trim()
-                viewModel.resetToast()
                 goToResetPasswordFragment(email)
             }
         }

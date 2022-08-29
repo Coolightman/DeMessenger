@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.coolightman.demessenger.R
@@ -77,6 +78,10 @@ class ChatFragment : Fragment() {
                     viewModel.sendMessage(message)
                 }
             }
+
+            topAppToolbar.setNavigationOnClickListener {
+                findNavController().popBackStack()
+            }
         }
     }
 
@@ -110,7 +115,7 @@ class ChatFragment : Fragment() {
                 it?.let {
                     val isOnlineBackground = getIsOnlineBackground(it)
                     binding.apply {
-                        tvCompanionInfo.text = it.nickName
+                        topAppToolbar.title = it.nickName
                         viewOnlineStatus.background = isOnlineBackground
                     }
                 }

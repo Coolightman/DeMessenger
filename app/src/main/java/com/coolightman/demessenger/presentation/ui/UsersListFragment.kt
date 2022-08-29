@@ -131,6 +131,11 @@ class UsersListFragment : Fragment() {
         Runtime.getRuntime().exit(0)
     }
 
+    override fun onStop() {
+        super.onStop()
+        viewModel.resetToast()
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

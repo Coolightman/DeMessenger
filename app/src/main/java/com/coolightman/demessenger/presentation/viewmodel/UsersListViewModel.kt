@@ -94,6 +94,11 @@ class UsersListViewModel : ViewModel() {
         _isRestartApp.postValue(true)
     }
 
+    fun resetToast() {
+        _toast.postValue("")
+        _toastLong.postValue("")
+    }
+
     companion object {
         private const val LOG_TAG = "UsersListViewModel"
         private const val SIGN_OUT_PAUSE = 500L

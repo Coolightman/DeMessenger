@@ -12,50 +12,44 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include
+        <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/topAppBar"
-            layout="@layout/app_bar_without_menu"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/layout_companion_info"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/companion_background_info_color"
-            android:gravity="center"
-            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/topAppBar">
+            app:layout_constraintTop_toTopOf="parent">
 
-            <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/tv_companion_info"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                tools:text="Vasia Pupkin" />
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/topAppToolbar"
+                style="@style/Widget.MaterialComponents.Toolbar.Surface"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                app:navigationIcon="@drawable/ic_baseline_arrow_back_24"
+                app:titleCentered="true"
+                tools:title="name" />
 
-            <View
-                android:id="@+id/view_online_status"
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_margin="12dp"
-                tools:background="@drawable/circle_red" />
+        </com.google.android.material.appbar.AppBarLayout>
 
-        </LinearLayout>
+        <View
+            android:id="@+id/view_online_status"
+            android:layout_width="12dp"
+            android:layout_height="12dp"
+            android:layout_margin="12dp"
+            app:layout_constraintBottom_toBottomOf="@id/topAppBar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/topAppBar"
+            tools:background="@drawable/circle_red" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@color/chat_background_color"
             app:layout_constraintBottom_toTopOf="@id/layout_message"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/layout_companion_info"
+            app:layout_constraintTop_toBottomOf="@id/topAppBar"
             tools:listitem="@layout/foreign_message_item" />
 
         <LinearLayout
