@@ -82,10 +82,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="bottom"
                 android:background="@drawable/ic_baseline_send_24"
-                android:backgroundTint="@color/primary_app"
-                android:scaleX="0.6"
-                android:scaleY="0.6"
-                app:tint="@color/primary_app" />
+                android:backgroundTint="@color/primary_app"/>
 
         </LinearLayout>
 

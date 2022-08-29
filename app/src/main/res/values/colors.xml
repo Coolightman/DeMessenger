@@ -13,4 +13,5 @@
     <color name="send_message_color">#26000000</color>
     <color name="companion_background_info_color">#4D9FA8DA</color>
     <color name="chat_background_color">#121E88E5</color>
+    <color name="logo_color">#296093</color>
 </resources>

@@ -4,12 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.coolightman.demessenger.data.database.DB_URL
+import com.coolightman.demessenger.data.database.MESSAGES_REF
+import com.coolightman.demessenger.data.database.USERS_REF
+import com.coolightman.demessenger.data.database.USER_IS_ONLINE_KEY
 import com.coolightman.demessenger.domain.entity.Message
 import com.coolightman.demessenger.domain.entity.User
-import com.coolightman.demessenger.utils.DB_URL
-import com.coolightman.demessenger.utils.MESSAGES_REF
-import com.coolightman.demessenger.utils.USERS_REF
-import com.coolightman.demessenger.utils.USER_IS_ONLINE_KEY
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -49,28 +49,29 @@ class ChatViewModel(
         listenMessages()
     }
 
-    fun setCurrentUserIsOnline(isOnline: Boolean){
+    fun setCurrentUserIsOnline(isOnline: Boolean) {
         referenceUsers.child(currentUserId).child(USER_IS_ONLINE_KEY).setValue(isOnline)
     }
 
     private fun listenMessages() {
-        referenceMessages.child(currentUserId).child(companionUserId).addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val messagesList = mutableListOf<Message>()
-                for (dataSnapshot in snapshot.children){
-                    val message = dataSnapshot.getValue(Message::class.java)
-                    message?.let {
-                        messagesList.add(it)
+        referenceMessages.child(currentUserId).child(companionUserId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val messagesList = mutableListOf<Message>()
+                    for (dataSnapshot in snapshot.children) {
+                        val message = dataSnapshot.getValue(Message::class.java)
+                        message?.let {
+                            messagesList.add(it)
+                        }
                     }
+                    _messages.postValue(messagesList)
                 }
-                _messages.postValue(messagesList)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Log.d(LOG_TAG, "listen chat messages:failure | ${error.message}")
-                _toastLong.postValue(error.message)
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    Log.d(LOG_TAG, "listen chat messages:failure | ${error.message}")
+                    _toastLong.postValue(error.message)
+                }
+            })
     }
 
     private fun listenCompanionUserData() {
