@@ -7,10 +7,16 @@ import androidx.lifecycle.ViewModel
 import com.coolightman.demessenger.domain.entity.User
 import com.coolightman.demessenger.data.database.DB_URL
 import com.coolightman.demessenger.data.database.USERS_REF
+import com.coolightman.demessenger.domain.usecase.RegisterUserUseCase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class RegistrationViewModel : ViewModel() {
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(
+    private val registerUserUseCase: RegisterUserUseCase
+) : ViewModel() {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDB = FirebaseDatabase.getInstance(DB_URL)

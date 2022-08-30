@@ -11,22 +11,36 @@ import com.coolightman.demessenger.data.database.USERS_REF
 import com.coolightman.demessenger.data.database.USER_IS_ONLINE_KEY
 import com.coolightman.demessenger.domain.entity.Message
 import com.coolightman.demessenger.domain.entity.User
+import com.coolightman.demessenger.domain.usecase.GetChatMessagesUseCase
+import com.coolightman.demessenger.domain.usecase.GetUserUseCase
+import com.coolightman.demessenger.domain.usecase.SendMessageUseCase
+import com.coolightman.demessenger.domain.usecase.SetUserIsOnlineUseCase
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
+@HiltViewModel
 class ChatViewModel @Inject constructor(
-    private val state: SavedStateHandle
+    private val state: SavedStateHandle,
+    private val userIsOnlineUseCase: SetUserIsOnlineUseCase,
+    private val getChatMessagesUseCase: GetChatMessagesUseCase,
+    private val getUserUseCase: GetUserUseCase,
+    private val sendMessageUseCase: SendMessageUseCase
 ) : ViewModel() {
 
     private val firebaseDB = FirebaseDatabase.getInstance(DB_URL)
     private val referenceUsers = firebaseDB.getReference(USERS_REF)
     private val referenceMessages = firebaseDB.getReference(MESSAGES_REF)
 
-    private var userId = state.get<String>("userId")!!
-    private var companionId = state.get<String>("companionId")!!
+    private val userId by lazy {
+        state.get<String>("userId")!!
+    }
+    private val companionId by lazy {
+        state.get<String>("companionId")!!
+    }
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>

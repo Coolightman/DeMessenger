@@ -9,17 +9,27 @@ import com.coolightman.demessenger.domain.entity.User
 import com.coolightman.demessenger.data.database.DB_URL
 import com.coolightman.demessenger.data.database.USERS_REF
 import com.coolightman.demessenger.data.database.USER_IS_ONLINE_KEY
+import com.coolightman.demessenger.domain.usecase.GetAllUsersUseCase
+import com.coolightman.demessenger.domain.usecase.LogoutUserUseCase
+import com.coolightman.demessenger.domain.usecase.SetUserIsOnlineUseCase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UsersListViewModel : ViewModel() {
+@HiltViewModel
+class UsersListViewModel @Inject constructor(
+    private val setUserIsOnlineUseCase: SetUserIsOnlineUseCase,
+    private val getAllUsersUseCase: GetAllUsersUseCase,
+    private val logoutUserUseCase: LogoutUserUseCase
+) : ViewModel() {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
     private val firebaseDB = FirebaseDatabase.getInstance(DB_URL)
