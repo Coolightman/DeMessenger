@@ -3,7 +3,7 @@ Demo messenger app to test firebase authentication and database
 
 ## Tech Stack
 
-Kotlin, MVVM+LiveData, Clean Architecture, HILT, Coroutine+Flow, Navigation, Material Design 3
+Kotlin, MVVM+LiveData, Clean Architecture, HILT, Coroutine+Flow, Navigation, Material Design 3, Firebase(Authentication and Database)
 
 ## App screenshots
 
