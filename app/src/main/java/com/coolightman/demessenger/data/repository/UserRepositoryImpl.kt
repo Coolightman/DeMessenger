@@ -12,31 +12,31 @@ class UserRepositoryImpl @Inject constructor(
     private val firebaseDB: FirebaseDatabase
 ): UserRepository {
 
-    override fun setUserIsOnline(online: Boolean) {
+    override suspend fun setUserIsOnline(online: Boolean) {
         TODO("Not yet implemented")
     }
 
-    override fun logoutUser() {
+    override suspend fun logoutUser() {
         TODO("Not yet implemented")
     }
 
-    override fun resetPassword(email: String) {
+    override suspend fun resetPassword(email: String) {
         TODO("Not yet implemented")
     }
 
-    override fun registerUser(nickname: String, email: String, password: String) {
+    override suspend fun registerUser(nickname: String, email: String, password: String) {
         TODO("Not yet implemented")
     }
 
-    override fun getCurrentUser(): FirebaseUser? {
+    override suspend fun getCurrentUser(): FirebaseUser? {
         TODO("Not yet implemented")
     }
 
-    override fun loginUser(email: String, password: String) {
+    override suspend fun loginUser(email: String, password: String) {
         TODO("Not yet implemented")
     }
 
-    override fun getUser(userId: String): User {
+    override suspend fun getUser(userId: String): User {
         TODO("Not yet implemented")
     }
 }

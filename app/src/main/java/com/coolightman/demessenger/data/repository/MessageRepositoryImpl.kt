@@ -9,11 +9,11 @@ class MessageRepositoryImpl @Inject constructor(
     private val firebaseDB: FirebaseDatabase
 ) : MessageRepository {
 
-    override fun getChatMessages(userId: String, companionId: String) {
+    override suspend fun getChatMessages(userId: String, companionId: String) {
         TODO("Not yet implemented")
     }
 
-    override fun sendMessage(message: Message) {
+    override suspend fun sendMessage(message: Message) {
         TODO("Not yet implemented")
     }
 }

@@ -8,7 +8,7 @@ import javax.inject.Inject
 class UsersRepositoryImpl @Inject constructor(
     private val firebaseDB: FirebaseDatabase
 ) : UsersRepository {
-    override fun getAllUsersList(): List<User> {
+    override suspend fun getAllUsersList(): List<User> {
         TODO("Not yet implemented")
     }
 }
