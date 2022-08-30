@@ -36,7 +36,7 @@
             android:id="@+id/action_usersListFragment_to_chatFragment"
             app:destination="@id/chatFragment" />
         <argument
-            android:name="currentUserId"
+            android:name="userId"
             app:argType="string" />
     </fragment>
     <fragment
@@ -65,10 +65,10 @@
         android:name="com.coolightman.demessenger.presentation.ui.ChatFragment"
         android:label="ChatFragment" >
         <argument
-            android:name="currentUserId"
+            android:name="userId"
             app:argType="string" />
         <argument
-            android:name="companionUserId"
+            android:name="companionId"
             app:argType="string" />
     </fragment>
 </navigation>

@@ -19,9 +19,9 @@ class LoginViewModel : ViewModel() {
     val toastLong: LiveData<String>
         get() = _toastLong
 
-    private val _currentUserId = MutableLiveData<String?>()
-    val currentUserId: LiveData<String?>
-        get() = _currentUserId
+    private val _userId = MutableLiveData<String?>()
+    val userId: LiveData<String?>
+        get() = _userId
 
     init {
         authentication()
@@ -30,11 +30,11 @@ class LoginViewModel : ViewModel() {
     private fun authentication() {
         val currentUser = firebaseAuth.currentUser
         if (currentUser != null){
-            _currentUserId.postValue(currentUser.uid)
+            _userId.postValue(currentUser.uid)
         }
         else {
             Log.d(LOG_TAG, "User is NOT authorized")
-            _currentUserId.postValue(null)
+            _userId.postValue(null)
         }
     }
 

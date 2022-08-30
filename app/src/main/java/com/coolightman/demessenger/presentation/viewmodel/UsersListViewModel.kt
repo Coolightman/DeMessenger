@@ -49,7 +49,7 @@ class UsersListViewModel : ViewModel() {
         loadUsersList()
     }
 
-    fun setCurrentUserIsOnline(isOnline: Boolean){
+    fun setUserIsOnline(isOnline: Boolean){
         firebaseAuth.currentUser?.let {
             referenceUsers.child(it.uid).child(USER_IS_ONLINE_KEY).setValue(isOnline)
         }
@@ -82,9 +82,9 @@ class UsersListViewModel : ViewModel() {
 
     fun logoutUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            setCurrentUserIsOnline(false)
+            setUserIsOnline(false)
             firebaseAuth.signOut()
-            Log.d(LOG_TAG, "Logout current User")
+            Log.d(LOG_TAG, "Logout User")
             delay(SIGN_OUT_PAUSE)
             restartApplication()
         }

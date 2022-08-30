@@ -28,8 +28,8 @@ class UsersListFragment : Fragment() {
 
     private val args by navArgs<UsersListFragmentArgs>()
 
-    private val currentUserId by lazy {
-        args.currentUserId
+    private val userId by lazy {
+        args.userId
     }
 
     private lateinit var usersAdapter: UsersAdapter
@@ -62,12 +62,12 @@ class UsersListFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setCurrentUserIsOnline(true)
+        viewModel.setUserIsOnline(true)
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.setCurrentUserIsOnline(false)
+        viewModel.setUserIsOnline(false)
     }
 
     private fun createAdapter() {
@@ -75,11 +75,11 @@ class UsersListFragment : Fragment() {
         binding.rvUsers.adapter = usersAdapter
     }
 
-    private fun onUserClick(companionUserId: String) {
+    private fun onUserClick(companionId: String) {
         findNavController().navigate(
             UsersListFragmentDirections.actionUsersListFragmentToChatFragment(
-                currentUserId,
-                companionUserId
+                userId,
+                companionId
             )
         )
     }

@@ -4,14 +4,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
 class ChatViewModelFactory(
-    private val currentUserId: String,
-    private val companionUserId: String
+    private val userId: String,
+    private val companionId: String
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(ChatViewModel::class.java)) {
-            return ChatViewModel(currentUserId, companionUserId) as T
+            return ChatViewModel(userId, companionId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class $modelClass")
     }

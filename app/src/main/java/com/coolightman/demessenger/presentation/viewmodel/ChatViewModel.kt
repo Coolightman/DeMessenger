@@ -16,8 +16,8 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
 class ChatViewModel(
-    private val currentUserId: String,
-    private val companionUserId: String
+    private val userId: String,
+    private val companionId: String
 ) : ViewModel() {
 
     private val firebaseDB = FirebaseDatabase.getInstance(DB_URL)
@@ -36,25 +36,25 @@ class ChatViewModel(
     val messages: LiveData<List<Message>>
         get() = _messages
 
-    private val _companionUser = MutableLiveData<User>()
-    val companionUser: LiveData<User>
-        get() = _companionUser
+    private val _companion = MutableLiveData<User>()
+    val companion: LiveData<User>
+        get() = _companion
 
     private val _isSentMessage = MutableLiveData<Boolean>()
     val isSentMessage: LiveData<Boolean>
         get() = _isSentMessage
 
     init {
-        listenCompanionUserData()
+        getCompanionData()
         listenMessages()
     }
 
-    fun setCurrentUserIsOnline(isOnline: Boolean) {
-        referenceUsers.child(currentUserId).child(USER_IS_ONLINE_KEY).setValue(isOnline)
+    fun setUserIsOnline(isOnline: Boolean) {
+        referenceUsers.child(userId).child(USER_IS_ONLINE_KEY).setValue(isOnline)
     }
 
     private fun listenMessages() {
-        referenceMessages.child(currentUserId).child(companionUserId)
+        referenceMessages.child(userId).child(companionId)
             .addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val messagesList = mutableListOf<Message>()
@@ -74,23 +74,24 @@ class ChatViewModel(
             })
     }
 
-    private fun listenCompanionUserData() {
-        referenceUsers.child(companionUserId).addValueEventListener(object : ValueEventListener {
+    private fun getCompanionData() {
+        referenceUsers.child(companionId).addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val user = snapshot.getValue(User::class.java)
                 user?.let {
-                    _companionUser.postValue(it)
+                    _companion.postValue(it)
                 }
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Log.d(LOG_TAG, "read companionUser User:failure | ${error.message}")
+                Log.d(LOG_TAG, "Get companion User:failure | ${error.message}")
                 _toastLong.postValue(error.message)
             }
         })
     }
 
-    fun sendMessage(message: Message) {
+    fun sendMessage(text: String) {
+        val message = createMessage(text)
         referenceMessages
             .child(message.senderId)
             .child(message.receiverId)
@@ -108,6 +109,9 @@ class ChatViewModel(
                 }
             }
     }
+
+    private fun createMessage(text: String): Message =
+        Message(text, userId, companionId)
 
     private fun saveMessageToReceiver(message: Message) {
         referenceMessages

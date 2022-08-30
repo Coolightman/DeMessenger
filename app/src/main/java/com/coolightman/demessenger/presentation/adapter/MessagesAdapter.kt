@@ -11,7 +11,7 @@ import com.coolightman.demessenger.domain.entity.Message
 import com.coolightman.demessenger.domain.entity.MessageType
 
 class MessagesAdapter(
-    private val currentUserId: String
+    private val userId: String
 ) : ListAdapter<Message, MessagesAdapter.MessageViewHolder>(Message.DIFF) {
 
     private lateinit var bindingOwnMessage: OwnMessageItemBinding
@@ -55,7 +55,7 @@ class MessagesAdapter(
 
     override fun getItemViewType(position: Int): Int {
         return when (getItem(position).senderId) {
-            currentUserId -> MessageType.OWN.ordinal
+            userId -> MessageType.OWN.ordinal
             else -> MessageType.FOREIGN.ordinal
         }
     }

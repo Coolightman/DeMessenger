@@ -30,16 +30,16 @@ class ChatFragment : Fragment() {
     }
 
     private val viewModelFactory by lazy {
-        ChatViewModelFactory(currentUserId, companionUserId)
+        ChatViewModelFactory(userId, companionId)
     }
 
     private val args by navArgs<ChatFragmentArgs>()
 
-    private val currentUserId by lazy {
-        args.currentUserId
+    private val userId by lazy {
+        args.userId
     }
-    private val companionUserId by lazy {
-        args.companionUserId
+    private val companionId by lazy {
+        args.companionId
     }
 
     private lateinit var messagesAdapter: MessagesAdapter
@@ -61,12 +61,12 @@ class ChatFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        viewModel.setCurrentUserIsOnline(true)
+        viewModel.setUserIsOnline(true)
     }
 
     override fun onPause() {
         super.onPause()
-        viewModel.setCurrentUserIsOnline(false)
+        viewModel.setUserIsOnline(false)
     }
 
     private fun listeners() {
@@ -74,8 +74,7 @@ class ChatFragment : Fragment() {
             viewSendMessage.setOnClickListener {
                 val text = etMessage.text.toString().trim()
                 if (text.isNotEmpty()){
-                    val message: Message = createMessage(text)
-                    viewModel.sendMessage(message)
+                    viewModel.sendMessage(text)
                 }
             }
 
@@ -84,13 +83,6 @@ class ChatFragment : Fragment() {
             }
         }
     }
-
-    private fun createMessage(text: String): Message =
-        Message(
-            text = text,
-            senderId = currentUserId,
-            receiverId = companionUserId
-        )
 
     private fun observers() {
         viewModel.apply {
@@ -111,7 +103,7 @@ class ChatFragment : Fragment() {
                 binding.rvChat.smoothScrollToPosition(it.size)
             }
 
-            companionUser.observe(viewLifecycleOwner) {
+            companion.observe(viewLifecycleOwner) {
                 it?.let {
                     val isOnlineBackground = getIsOnlineBackground(it)
                     binding.apply {
@@ -138,7 +130,7 @@ class ChatFragment : Fragment() {
     }
 
     private fun createAdapter() {
-        messagesAdapter = MessagesAdapter(currentUserId)
+        messagesAdapter = MessagesAdapter(userId)
         binding.rvChat.apply {
             layoutManager = setLayoutManager()
             adapter = messagesAdapter
