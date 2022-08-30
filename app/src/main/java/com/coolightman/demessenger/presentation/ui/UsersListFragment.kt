@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.app.ActivityCompat.finishAffinity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -16,15 +17,15 @@ import com.coolightman.demessenger.R
 import com.coolightman.demessenger.databinding.FragmentUsersListBinding
 import com.coolightman.demessenger.presentation.adapter.UsersAdapter
 import com.coolightman.demessenger.presentation.viewmodel.UsersListViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class UsersListFragment : Fragment() {
 
     private var _binding: FragmentUsersListBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[UsersListViewModel::class.java]
-    }
+    private val viewModel by viewModels<UsersListViewModel>()
 
     private val args by navArgs<UsersListFragmentArgs>()
 

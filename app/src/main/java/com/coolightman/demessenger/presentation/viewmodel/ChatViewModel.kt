@@ -3,6 +3,7 @@ package com.coolightman.demessenger.presentation.viewmodel
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.coolightman.demessenger.data.database.DB_URL
 import com.coolightman.demessenger.data.database.MESSAGES_REF
@@ -14,15 +15,18 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import javax.inject.Inject
 
-class ChatViewModel(
-    private val userId: String,
-    private val companionId: String
+class ChatViewModel @Inject constructor(
+    private val state: SavedStateHandle
 ) : ViewModel() {
 
     private val firebaseDB = FirebaseDatabase.getInstance(DB_URL)
     private val referenceUsers = firebaseDB.getReference(USERS_REF)
     private val referenceMessages = firebaseDB.getReference(MESSAGES_REF)
+
+    private var userId = state.get<String>("userId")!!
+    private var companionId = state.get<String>("companionId")!!
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>

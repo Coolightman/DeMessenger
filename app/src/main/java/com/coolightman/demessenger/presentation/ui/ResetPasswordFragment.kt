@@ -6,20 +6,20 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.coolightman.demessenger.databinding.FragmentResetPasswordBinding
 import com.coolightman.demessenger.presentation.viewmodel.ResetPasswordViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ResetPasswordFragment : Fragment() {
 
     private var _binding: FragmentResetPasswordBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by lazy {
-        ViewModelProvider(this)[ResetPasswordViewModel::class.java]
-    }
+    private val viewModel by viewModels<ResetPasswordViewModel>()
 
     private val args by navArgs<ResetPasswordFragmentArgs>()
 

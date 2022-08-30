@@ -4,9 +4,15 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.coolightman.demessenger.domain.usecase.ResetPasswordUseCase
 import com.google.firebase.auth.FirebaseAuth
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class ResetPasswordViewModel : ViewModel() {
+@HiltViewModel
+class ResetPasswordViewModel @Inject constructor(
+    private val resetPasswordUseCase: ResetPasswordUseCase
+) : ViewModel() {
 
     private val firebaseAuth = FirebaseAuth.getInstance()
 
