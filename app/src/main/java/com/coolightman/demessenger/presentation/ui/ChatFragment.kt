@@ -67,7 +67,7 @@ class ChatFragment : Fragment() {
         binding.apply {
             viewSendMessage.setOnClickListener {
                 val text = etMessage.text.toString().trim()
-                if (text.isNotEmpty()){
+                if (text.isNotEmpty()) {
                     viewModel.sendMessage(text)
                 }
             }
@@ -107,8 +107,8 @@ class ChatFragment : Fragment() {
                 }
             }
 
-            isSentMessage.observe(viewLifecycleOwner){
-                if (it){
+            isSentMessage.observe(viewLifecycleOwner) {
+                if (it) {
                     binding.etMessage.text?.clear()
                 }
             }
@@ -118,7 +118,7 @@ class ChatFragment : Fragment() {
 
     private fun getIsOnlineBackground(it: User): Drawable? {
         return when (it.online) {
-            true ->  ContextCompat.getDrawable(requireContext(), R.drawable.circle_green)
+            true -> ContextCompat.getDrawable(requireContext(), R.drawable.circle_green)
             false -> ContextCompat.getDrawable(requireContext(), R.drawable.circle_red)
         }
     }

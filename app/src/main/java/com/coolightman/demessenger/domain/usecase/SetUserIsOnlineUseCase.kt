@@ -6,5 +6,6 @@ import javax.inject.Inject
 class SetUserIsOnlineUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke(isOnline: Boolean) = repository.setUserIsOnline(isOnline)
+    suspend operator fun invoke(userId: String, isOnline: Boolean) =
+        repository.setUserIsOnline(userId, isOnline)
 }

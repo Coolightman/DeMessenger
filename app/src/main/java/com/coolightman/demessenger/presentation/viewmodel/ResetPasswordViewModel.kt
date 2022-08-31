@@ -1,20 +1,19 @@
 package com.coolightman.demessenger.presentation.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.coolightman.demessenger.domain.entity.ResultOf
 import com.coolightman.demessenger.domain.usecase.ResetPasswordUseCase
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class ResetPasswordViewModel @Inject constructor(
     private val resetPasswordUseCase: ResetPasswordUseCase
 ) : ViewModel() {
-
-    private val firebaseAuth = FirebaseAuth.getInstance()
 
     private var _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -37,21 +36,18 @@ class ResetPasswordViewModel @Inject constructor(
     }
 
     private fun resetPasswordFirebase(userEmail: String) {
-        firebaseAuth.sendPasswordResetEmail(userEmail).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                Log.d(LOG_TAG, "sendPasswordResetEmail:success")
-                _toast.postValue("Reset password email is sent")
-                _isSuccessReset.postValue(true)
-            } else {
-                task.exception?.let {
-                    Log.d(LOG_TAG, "sendPasswordResetEmail:failure | ${it.message}")
-                    _toastLong.postValue(it.message)
+        viewModelScope.launch {
+            resetPasswordUseCase(userEmail).collect { result ->
+                when (result) {
+                    is ResultOf.Success -> {
+                        _toast.postValue("Reset password email is sent")
+                        _isSuccessReset.postValue(true)
+                    }
+                    is ResultOf.Error -> {
+                        _toastLong.postValue(result.message)
+                    }
                 }
             }
         }
-    }
-
-    companion object {
-        private const val LOG_TAG = "ResetPasswordViewModel"
     }
 }

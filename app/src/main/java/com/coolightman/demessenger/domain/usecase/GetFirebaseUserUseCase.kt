@@ -6,5 +6,5 @@ import javax.inject.Inject
 class GetFirebaseUserUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke() = repository.getCurrentUser()
+    suspend operator fun invoke() = repository.getCurrentUser()
 }

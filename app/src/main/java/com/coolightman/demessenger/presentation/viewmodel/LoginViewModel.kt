@@ -4,10 +4,12 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.coolightman.demessenger.domain.entity.ResultOf
 import com.coolightman.demessenger.domain.usecase.GetFirebaseUserUseCase
 import com.coolightman.demessenger.domain.usecase.LoginUserUseCase
-import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -15,8 +17,6 @@ class LoginViewModel @Inject constructor(
     private val getFirebaseUserUseCase: GetFirebaseUserUseCase,
     private val loginUserUseCase: LoginUserUseCase
 ) : ViewModel() {
-
-    private val firebaseAuth = FirebaseAuth.getInstance()
 
     private val _toast = MutableLiveData<String>()
     val toast: LiveData<String>
@@ -35,36 +35,34 @@ class LoginViewModel @Inject constructor(
     }
 
     private fun authentication() {
-        val currentUser = firebaseAuth.currentUser
-        if (currentUser != null) {
-            _userId.postValue(currentUser.uid)
-        } else {
-            Log.d(LOG_TAG, "User is NOT authorized")
-            _userId.postValue(null)
+        viewModelScope.launch {
+            val currentUser = getFirebaseUserUseCase()
+            if (currentUser != null) {
+                _userId.postValue(currentUser.uid)
+            } else {
+                Log.d(LOG_TAG, "User is NOT authorized")
+                _userId.postValue(null)
+            }
         }
     }
 
     fun login(email: String, password: String) {
-        if (isNotEmptyFields(password, email)) {
-            signInFirebase(email, password)
-        } else {
-            _toast.postValue("Some fields are empty")
-        }
-    }
-
-    private fun signInFirebase(userEmail: String, userPassword: String) {
-        firebaseAuth.signInWithEmailAndPassword(userEmail, userPassword)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    Log.d(LOG_TAG, "signInWithEmailAndPassword:success")
-                    authentication()
-                } else {
-                    task.exception?.let {
-                        Log.d(LOG_TAG, "signInWithEmailAndPassword:failure | ${it.message}")
-                        _toastLong.postValue(it.message)
+        viewModelScope.launch {
+            if (isNotEmptyFields(password, email)) {
+                loginUserUseCase(email, password).collect { result ->
+                    when (result) {
+                        is ResultOf.Success -> {
+                            authentication()
+                        }
+                        is ResultOf.Error -> {
+                            _toastLong.postValue(result.message)
+                        }
                     }
                 }
+            } else {
+                _toast.postValue("Some fields are empty")
             }
+        }
     }
 
     private fun isNotEmptyFields(password: String, email: String) =

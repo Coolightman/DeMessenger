@@ -6,6 +6,6 @@ import javax.inject.Inject
 class RegisterUserUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    operator fun invoke(nickname: String, email: String, password: String) =
+    suspend operator fun invoke(nickname: String, email: String, password: String) =
         repository.registerUser(nickname, email, password)
 }

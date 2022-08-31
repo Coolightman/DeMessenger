@@ -6,6 +6,6 @@ import javax.inject.Inject
 class GetChatMessagesUseCase @Inject constructor(
     private val repository: MessageRepository
 ) {
-    operator fun invoke(userId: String, companionId: String) =
+    suspend operator fun invoke(userId: String, companionId: String) =
         repository.getChatMessages(userId, companionId)
 }
