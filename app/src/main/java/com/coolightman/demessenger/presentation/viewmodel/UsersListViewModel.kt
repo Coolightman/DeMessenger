@@ -95,6 +95,6 @@ class UsersListViewModel @Inject constructor(
     }
 
     companion object {
-        private const val SIGN_OUT_PAUSE = 500L
+        private const val SIGN_OUT_PAUSE = 200L
     }
 }
