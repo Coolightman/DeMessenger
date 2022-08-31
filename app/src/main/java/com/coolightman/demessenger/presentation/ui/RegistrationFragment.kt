@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.coolightman.demessenger.databinding.FragmentRegistrationBinding
 import com.coolightman.demessenger.presentation.viewmodel.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,8 @@ class RegistrationFragment : Fragment() {
 
     private val viewModel by viewModels<RegistrationViewModel>()
 
+    private val args by navArgs<RegistrationFragmentArgs>()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -30,8 +33,18 @@ class RegistrationFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val email = args.email
+        val password = args.password
+        setEmailAndPasswordInEditText(email, password)
         observers()
         listeners()
+    }
+
+    private fun setEmailAndPasswordInEditText(email: String, password: String) {
+        binding.apply {
+            etEmail.setText(email)
+            etPassword.setText(password)
+        }
     }
 
     private fun observers() {

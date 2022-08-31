@@ -78,7 +78,9 @@ class LoginFragment : Fragment() {
             }
 
             btRegister.setOnClickListener {
-                goToRegistrationFragment()
+                val email = binding.etEmail.text.toString().trim()
+                val password = binding.etPassword.text.toString().trim()
+                goToRegistrationFragment(email, password)
             }
 
             tvForgotPassword.setOnClickListener {
@@ -88,9 +90,9 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun goToRegistrationFragment() {
+    private fun goToRegistrationFragment(email: String, password: String) {
         findNavController().navigate(
-            LoginFragmentDirections.actionLoginFragmentToRegistrationFragment()
+            LoginFragmentDirections.actionLoginFragmentToRegistrationFragment(email, password)
         )
     }
 
