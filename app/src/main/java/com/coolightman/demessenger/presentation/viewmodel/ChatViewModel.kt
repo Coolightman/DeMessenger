@@ -8,6 +8,7 @@ import com.coolightman.demessenger.domain.usecase.GetChatMessagesUseCase
 import com.coolightman.demessenger.domain.usecase.GetUserUseCase
 import com.coolightman.demessenger.domain.usecase.SendMessageUseCase
 import com.coolightman.demessenger.domain.usecase.SetUserIsOnlineUseCase
+import com.coolightman.demessenger.presentation.ui.ChatFragmentArgs
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,11 +22,15 @@ class ChatViewModel @Inject constructor(
     private val sendMessageUseCase: SendMessageUseCase
 ) : ViewModel() {
 
+    private val args by lazy {
+        ChatFragmentArgs.fromSavedStateHandle(state)
+    }
+
     private val userId by lazy {
-        state.get<String>("userId")!!
+        args.userId
     }
     private val companionId by lazy {
-        state.get<String>("companionId")!!
+        args.companionId
     }
 
     private val _toast = MutableLiveData<String>()
